@@ -266,8 +266,6 @@ const Register = () => {
     ChapaiNawabganj: ["Sadar", "Shibganj", "Nachole"],
   };
 
-  //   console.log(Object.keys(policeStations).length);
-
   const [selectedStations, setSelectedStations] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -305,28 +303,34 @@ const Register = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    // reset,
   } = useForm();
   const [userType, setUserType] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordMatchError, setPasswordMatchError] = useState(false);
 
   const onSubmit = (data) => {
     if (!userType) {
       alert("Please select a user type.");
       return;
     }
-    console.log("Form Data:", { ...data, userType });
-    reset();
+    if (data.password !== data.rePassword) {
+      setPasswordMatchError(true);
+      return;
+    }
+    setPasswordMatchError(false);
+    console.log("Form Data:", data);
+    // reset();
   };
 
   return (
-    <div className=" flex lg:gap-12 md:gap-9 mt-10 lg:w-10/12 w-11/12 mx-auto ">
+    <div className="lg:min-h-[650px] flex items-center lg:gap-12 md:gap-9 mt-10 lg:w-10/12 w-11/12 mx-auto ">
       {/* left side */}
       <motion.div
         animate={{ y: [70, 40, 70] }}
         transition={{ duration: 4, repeat: Infinity }}
-        className="lg:w-1/2 md:flex justify-start hidden"
+        className="lg:w-1/2 md:flex md:justify-center hidden"
       >
         <Lottie
           className="lg:w-[450px] lg:h-[450px] md:w-[303px] md:h-[303px] hidden md:block"
@@ -373,7 +377,7 @@ const Register = () => {
 
         {/* register Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* name & gender  */}
+          {/* name & phone  */}
           <div className="flex gap-5">
             {/* Name  */}
             <div className="w-1/2">
@@ -381,55 +385,15 @@ const Register = () => {
                 Name <span className="text-[#FF3232]">*</span>
               </label>
               <input
-                {...register("email", {
-                  required: "Email or Phone is required",
+                {...register("name", {
+                  required: "name is required",
                 })}
                 type="text"
                 placeholder="your name"
                 className="w-full p-2 border rounded mt-1"
               />
-              {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email.message}</p>
-              )}
-            </div>
-            {/* gender  */}
-            <div className="w-1/2">
-              <label className="text-gray-700 font-medium">
-                Gender <span className="text-[#FF3232]">*</span>
-              </label>
-              <select
-                {...register("gender", {
-                  required: "Gender is required",
-                })}
-                className="w-full p-2 border rounded mt-1"
-              >
-                <option value="">Choose One</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-              {errors.gender && (
-                <p className="text-red-500 text-sm">{errors.gender.message}</p>
-              )}
-            </div>
-          </div>
-
-          {/* email & phone  */}
-          <div className="flex gap-5">
-            {/* email  */}
-            <div className="w-1/2">
-              <label className="text-gray-700 font-medium">
-                Email <span className="text-[#FF3232]">*</span>
-              </label>
-              <input
-                {...register("email", {
-                  required: "Email or Phone is required",
-                })}
-                type="text"
-                placeholder="ex: user@gmail.com"
-                className="w-full p-2 border rounded mt-1"
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              {errors.name && (
+                <p className="text-red-500 text-sm">{errors.name.message}</p>
               )}
             </div>
             {/* phone  */}
@@ -438,139 +402,193 @@ const Register = () => {
                 Phone <span className="text-[#FF3232]">*</span>
               </label>
               <input
-                {...register("email", {
-                  required: "Email or Phone is required",
+                {...register("phone", {
+                  required: "Phone is required",
                 })}
                 type="text"
                 placeholder="ex: 01........."
                 className="w-full p-2 border rounded mt-1"
               />
-              {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              {errors.phone && (
+                <p className="text-red-500 text-sm">{errors.phone.message}</p>
               )}
             </div>
           </div>
+
+          {/* email & gender  */}
+          {userType !== "Student" && (
+            <div className="flex gap-5">
+              {/* email  */}
+              <div className="w-1/2">
+                <label className="text-gray-700 font-medium">
+                  Email <span className="text-[#FF3232]">*</span>
+                </label>
+                <input
+                  {...register("email", {
+                    required: "Email is required",
+                  })}
+                  type="email"
+                  placeholder="ex: user@gmail.com"
+                  className="w-full p-2 border rounded mt-1"
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email.message}</p>
+                )}
+              </div>
+              {/* gender  */}
+              <div className="w-1/2">
+                <label className="text-gray-700 font-medium">
+                  Gender <span className="text-[#FF3232]">*</span>
+                </label>
+                <select
+                  {...register("gender", {
+                    required: "Gender is required",
+                  })}
+                  className="w-full p-2 border rounded mt-1"
+                >
+                  <option value="">Choose One</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+                {errors.gender && (
+                  <p className="text-red-500 text-sm">
+                    {errors.gender.message}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* District & Your Location */}
-          <div className="flex gap-5">
-            {/* District Selection */}
-            <div className="w-1/2">
-              <label className="text-gray-700 font-medium">
-                Select District <span className="text-[#FF3232]">*</span>
-              </label>
-              <select
-                {...register("district", { required: "District is required" })}
-                className="w-full p-2 border rounded mt-1"
-                onChange={(e) => setSelectedDistrict(e.target.value)}
-              >
-                <option value="">Select District</option>
-                {districts.map((district) => (
-                  <option key={district} value={district}>
-                    {district}
-                  </option>
-                ))}
-              </select>
-              {errors.district && (
-                <p className="text-red-500 text-sm">
-                  {errors.district.message}
-                </p>
-              )}
-            </div>
-
-            {/* Your Location */}
-            <div className="w-1/2">
-              <label className="text-gray-700 font-medium">
-                Your Location <span className="text-[#FF3232]">*</span>
-              </label>
-              <select
-                {...register("policeStation", {
-                  required: "Police Station is required",
-                })}
-                className="w-full p-2 border rounded mt-1"
-                disabled={!selectedDistrict}
-              >
-                <option value="">Select Area</option>
-                {selectedDistrict &&
-                  policeStations[selectedDistrict]?.map((station) => (
-                    <option key={station} value={station}>
-                      {station}
+          {userType !== "Student" && (
+            <div className="flex gap-5">
+              {/* District Selection */}
+              <div className="w-1/2">
+                <label className="text-gray-700 font-medium">
+                  Select District <span className="text-[#FF3232]">*</span>
+                </label>
+                <select
+                  {...register("district", {
+                    required: "District is required",
+                  })}
+                  className="w-full p-2 border rounded mt-1"
+                  onChange={(e) => setSelectedDistrict(e.target.value)}
+                >
+                  <option value="">Select District</option>
+                  {districts.map((district) => (
+                    <option key={district} value={district}>
+                      {district}
                     </option>
                   ))}
-              </select>
-              {errors.policeStation && (
-                <p className="text-red-500 text-sm">
-                  {errors.policeStation.message}
-                </p>
-              )}
+                </select>
+                {errors.district && (
+                  <p className="text-red-500 text-sm">
+                    {errors.district.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Your Location */}
+              <div className="w-1/2">
+                <label className="text-gray-700 font-medium">
+                  Your Location <span className="text-[#FF3232]">*</span>
+                </label>
+                <select
+                  {...register("location", {
+                    required: "Police Station is required",
+                  })}
+                  className="w-full p-2 border rounded mt-1"
+                  disabled={!selectedDistrict}
+                >
+                  <option value="">Select Area</option>
+                  {selectedDistrict &&
+                    policeStations[selectedDistrict]?.map((station) => (
+                      <option key={station} value={station}>
+                        {station}
+                      </option>
+                    ))}
+                </select>
+                {errors.location && (
+                  <p className="text-red-500 text-sm">
+                    {errors.location.message}
+                  </p>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* prefar tution area  */}
-          <div>
-            <label className="text-gray-700 font-medium">
-              Preferred Tuition Area <span className="text-[#FF3232]">*</span>
-            </label>
-            <div className="relative">
-              <input
-                ref={inputRef}
-                {...register("preferredTuitionArea", {
-                  required: "At least one police station should be selected",
-                })}
-                type="text"
-                className="w-full p-2 border rounded mt-1"
-                value={selectedStations.join(", ")} // Display selected stations as comma-separated values
-                readOnly
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)} // Toggle dropdown on click
-              />
-              {errors.preferredTuitionArea && (
-                <p className="text-red-500 text-sm">
-                  {errors.preferredTuitionArea.message}
+          {userType !== "Student" && (
+            <div>
+              <label className="text-gray-700 font-medium">
+                Preferred Tuition Area <span className="text-[#FF3232]">*</span>
+              </label>
+              <div className="relative">
+                <input
+                  ref={inputRef}
+                  {...register("preferredTuitionArea", {
+                    required: "At least one police station should be selected",
+                  })}
+                  type="text"
+                  placeholder="select..."
+                  className="w-full p-2 border rounded mt-1"
+                  value={selectedStations.join(", ")} // Display selected stations as comma-separated values
+                  readOnly
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)} // Toggle dropdown on click
+                />
+                {errors.preferredTuitionArea && (
+                  <p className="text-red-500 text-sm">
+                    {errors.preferredTuitionArea.message}
+                  </p>
+                )}
+                <p className="text-[12px] lg:leading-[24px] text-[#6C757D]">
+                  Set your preferred tuition area.
                 </p>
-              )}
-              {isDropdownOpen && (
-                <div
-                  ref={dropdownRef}
-                  className="absolute z-10 top-full left-0 w-full mt-1 bg-white border rounded-md shadow-md"
-                >
-                  <ul className="max-h-60 overflow-y-auto">
-                    {selectedDistrict &&
-                      policeStations[selectedDistrict]?.map(
-                        (station, index) => (
-                          <li
-                            key={index}
-                            className="p-2 hover:bg-gray-100 cursor-pointer"
-                            onClick={() => handleSelectStation(station)}
-                          >
-                            {station}
-                          </li>
-                        )
-                      )}
-                  </ul>
-                </div>
-              )}
-            </div>
-            <div className="mt-2">
-              {selectedStations.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {selectedStations.map((station, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center bg-gray-200 text-sm px-3 py-1 rounded-lg"
-                    >
-                      <span>{station}</span>
-                      <button
-                        type="button"
-                        className="ml-2 text-red-500"
-                        onClick={() => handleRemoveStation(station)}
+                {isDropdownOpen && (
+                  <div
+                    ref={dropdownRef}
+                    className="absolute z-10 top-full left-0 w-full mt-1 bg-white border rounded-md shadow-md"
+                  >
+                    <ul className="max-h-60 overflow-y-auto">
+                      {selectedDistrict &&
+                        policeStations[selectedDistrict]?.map(
+                          (station, index) => (
+                            <li
+                              key={index}
+                              className="p-2 hover:bg-gray-100 cursor-pointer"
+                              onClick={() => handleSelectStation(station)}
+                            >
+                              {station}
+                            </li>
+                          )
+                        )}
+                    </ul>
+                  </div>
+                )}
+              </div>
+              <div className="mt-2">
+                {selectedStations.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {selectedStations.map((station, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center bg-gray-200 text-sm px-3 py-1 rounded-lg"
                       >
-                        &times;
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
+                        <span>{station}</span>
+                        <button
+                          type="button"
+                          className="ml-2 text-red-500"
+                          onClick={() => handleRemoveStation(station)}
+                        >
+                          &times;
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Password Fields */}
           <div className="flex gap-5">
@@ -584,6 +602,7 @@ const Register = () => {
                   {...register("password", {
                     required: "Password is required",
                   })}
+                  placeholder="Password"
                   type={showPassword ? "text" : "password"}
                   className="w-full p-2 border rounded mt-1 focus:ring focus:ring-pink-200"
                 />
@@ -612,6 +631,7 @@ const Register = () => {
                   {...register("rePassword", {
                     required: "Re-enter your password",
                   })}
+                  placeholder="Re-enter Password..."
                   type={showPassword ? "text" : "password"}
                   className="w-full p-2 border rounded mt-1 focus:ring focus:ring-pink-200"
                 />
@@ -627,6 +647,9 @@ const Register = () => {
                 <p className="text-red-500 text-sm">
                   {errors.rePassword.message}
                 </p>
+              )}
+              {passwordMatchError && (
+                <p className="text-red-500">Passwords do not match</p>
               )}
             </div>
           </div>

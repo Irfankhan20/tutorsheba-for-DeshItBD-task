@@ -25,12 +25,12 @@ const Login = () => {
   };
 
   return (
-    <div className="lg:h-screen flex lg:gap-12 md:gap-9 mt-10 lg:w-10/12 w-11/12 mx-auto">
+    <div className=" flex  lg:gap-12 md:gap-9 mt-10 lg:w-10/12 w-11/12 mx-auto">
       {/* left side */}
       <motion.div
         animate={{ y: [70, 40, 70] }}
         transition={{ duration: 4, repeat: Infinity }}
-        className="lg:w-1/2 md:flex justify-start hidden "
+        className="lg:w-1/2 md:flex justify-center hidden "
       >
         <Lottie
           className="lg:w-[450px] lg:h-[450px] md:w-[333px] md:h-[333px] hidden md:block"
