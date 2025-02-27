@@ -1,5 +1,11 @@
+import NewsPortalSlide from "./newsPortalSlide/NewsPortalSlide";
+
 const Home = () => {
-  return <div className="pt-20">this is home page</div>;
+  return (
+    <div className="pt-20">
+      <NewsPortalSlide></NewsPortalSlide>
+    </div>
+  );
 };
 
 export default Home;
