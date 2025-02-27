@@ -25,7 +25,7 @@ const Login = () => {
   };
 
   return (
-    <div className="lg:h-screen flex mt-10 lg:w-10/12 w-11/12 mx-auto">
+    <div className="lg:h-screen flex lg:gap-12 md:gap-9 mt-10 lg:w-10/12 w-11/12 mx-auto">
       {/* left side */}
       <motion.div
         animate={{ y: [70, 40, 70] }}
@@ -40,7 +40,7 @@ const Login = () => {
       </motion.div>
       {/* right side  */}
 
-      <div className="bg-white p-6 rounded-lg border my-8 mb-12 w-full max-w-md">
+      <div className="bg-white p-6 rounded-lg border my-8 mb-12 w-full max-w-xl">
         <h2 className="text-center text-2xl font-semibold mb-4">Login</h2>
         <div className="border-b-2 border-pink-500 w-16 mx-auto mb-4"></div>
 
