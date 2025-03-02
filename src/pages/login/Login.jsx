@@ -2,12 +2,18 @@ import Lottie from "lottie-react";
 import animationData from "../../assets/login-lottie.json";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import tutor from "../../assets/teacher.webp";
 import student from "../../assets/student.webp";
+import { AuthContext } from "../../providers/AuthProvider";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const { signInUser } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+  const location = useLocation();
   const {
     register,
     handleSubmit,
@@ -18,10 +24,19 @@ const Login = () => {
 
   const onSubmit = (data) => {
     if (!userType) {
-      alert("Please select a user type.");
+      toast.error("Please select user type!!!");
       return;
     }
-    console.log("Form Data:", { ...data, userType });
+
+    signInUser(data.email, data.password)
+      .then(() => {
+        toast.success("Login Successful!");
+        navigate(location.state ? location.state : "/");
+      })
+      .catch(() => {
+        toast.error("Invalid Username or Password..!");
+      });
+    console.log("Form Data:", data, data.email, data.password);
   };
 
   return (

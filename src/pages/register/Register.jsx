@@ -2,12 +2,20 @@ import Lottie from "lottie-react";
 import animationData from "../../assets/login-lottie.json";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import tutor from "../../assets/teacher.webp";
 import student from "../../assets/student.webp";
+import { AuthContext } from "../../providers/AuthProvider";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { toast } from "react-toastify";
 
 const Register = () => {
+  const axiosPublic = useAxiosPublic();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
+  const { createUser, updateUserProfile } = useContext(AuthContext);
   const policeStations = {
     Dhaka: [
       "Adabor",
@@ -309,17 +317,73 @@ const Register = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [passwordMatchError, setPasswordMatchError] = useState(false);
+  const [uploadedPhoto, setUploadedPhoto] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const validatePassword = (password) => {
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const isValidLength = password.length >= 6;
+
+    if (!hasUppercase) {
+      return "Password must include at least one uppercase letter.";
+    }
+    if (!hasLowercase) {
+      return "Password must include at least one lowercase letter.";
+    }
+    if (!isValidLength) {
+      return "Password must be at least 6 characters long.";
+    }
+    return null;
+  };
 
   const onSubmit = (data) => {
     if (!userType) {
       alert("Please select a user type.");
       return;
     }
+    const passwordValidationError = validatePassword(data.password);
+    if (passwordValidationError) {
+      setPasswordError(passwordValidationError);
+      return;
+    }
+    setPasswordError("");
     if (data.password !== data.rePassword) {
       setPasswordMatchError(true);
       return;
     }
     setPasswordMatchError(false);
+
+    if (userType === "Tutor") {
+      setUploadedPhoto(tutor);
+    } else {
+      setUploadedPhoto(student);
+    }
+    createUser(data.email, data.password)
+      .then((res) => {
+        console.log(res.user);
+        updateUserProfile(data.name, uploadedPhoto)
+          .then(() => {
+            const userInfo = {
+              name: data.name,
+              email: data.email,
+              photoURL: uploadedPhoto,
+              userType: userType,
+              phone: data.phone,
+              gender: data.gender,
+              district: data.district,
+              location: data.location,
+              preferredTuitionArea: data.preferredTuitionArea,
+            };
+            axiosPublic.post("/user", userInfo).then((res) => {
+              if (res.data.insertedId) {
+                toast.success("register successful!");
+                navigate(from, { replace: true });
+              }
+            });
+          })
+          .catch(() => {});
+      })
+      .catch((error) => console.log("ERROR", error.message));
     console.log("Form Data:", data);
     // reset();
   };
@@ -618,6 +682,9 @@ const Register = () => {
                 <p className="text-red-500 text-sm">
                   {errors.password.message}
                 </p>
+              )}
+              {passwordError && (
+                <p className="text-red-500 text-sm mt-2">{passwordError}</p>
               )}
             </div>
 
