@@ -8,6 +8,8 @@ import Courses from "../pages/courses/Courses";
 import PremiumTutors from "../pages/premiumTutors/PremiumTutors";
 import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
+import ForgotPassword from "../pages/login/ForgotPassword";
+import Profile from "../pages/profile/Profile";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -40,6 +42,14 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register></Register>,
+      },
+      {
+        path: "/forgotPassword",
+        element: <ForgotPassword></ForgotPassword>,
+      },
+      {
+        path: "/profile",
+        element: <Profile></Profile>,
       },
     ],
   },

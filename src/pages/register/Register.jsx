@@ -338,7 +338,7 @@ const Register = () => {
 
   const onSubmit = (data) => {
     if (!userType) {
-      alert("Please select a user type.");
+      toast.error("Please select user type!!!");
       return;
     }
     const passwordValidationError = validatePassword(data.password);

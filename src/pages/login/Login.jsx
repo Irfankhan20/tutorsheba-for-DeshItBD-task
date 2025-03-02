@@ -8,9 +8,13 @@ import tutor from "../../assets/teacher.webp";
 import student from "../../assets/student.webp";
 import { AuthContext } from "../../providers/AuthProvider";
 import { toast } from "react-toastify";
+// import useUserByEmail from "../../hooks/useUserByEmail";
 
 const Login = () => {
-  const { signInUser } = useContext(AuthContext);
+  // const [email, setEmail] = useState("");
+  // const { aUser } = useUserByEmail(email);
+  // console.log(aUser);
+  const { signInUser, setEmailForForgot } = useContext(AuthContext);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,6 +31,10 @@ const Login = () => {
       toast.error("Please select user type!!!");
       return;
     }
+    // if (userType !== aUser?.userType) {
+    //   toast.error("Please select your correct user type!!!");
+    //   return;
+    // }
 
     signInUser(data.email, data.password)
       .then(() => {
@@ -101,6 +109,10 @@ const Login = () => {
               {...register("email", {
                 required: "Email or Phone is required",
               })}
+              onChange={
+                (e) => setEmailForForgot(e.target.value)
+                // setEmail(e.target.value);
+              }
               type="text"
               className="w-full p-2 border rounded mt-1"
             />
@@ -134,12 +146,15 @@ const Login = () => {
           {/* Remember Me & Forgot Password */}
           <div className="flex justify-between items-center text-sm">
             <label className="flex items-center">
-              <input type="checkbox" className="mr-2" />
+              <input type="checkbox" required className="mr-2" />
               Remember me
             </label>
-            <a href="#" className="text-[#05264E] hover:text-[#3c65f5]">
+            <Link
+              to="/forgotPassword"
+              className="text-[#05264E] hover:text-[#3c65f5]"
+            >
               Forgot Password
-            </a>
+            </Link>
           </div>
 
           {/* Login Button */}
