@@ -35,17 +35,17 @@ const Services = () => {
         }}
         autoplay={{
           delay: 2000,
-          disableOnInteraction: false, // Ensures autoplay continues after interaction
+          disableOnInteraction: false,
         }}
-        loop={true} // Keeps the slides rotating
+        loop={true}
         speed={2000}
-        observer={true} // Watches for visibility changes
-        observeParents={true} // Ensures Swiper detects when it becomes visible
+        observer={true}
+        observeParents={true}
         modules={[Autoplay]}
       >
         {services.map((service) => (
           <SwiperSlide key={service?._id}>
-            <div className="relative transition-transform duration-300 transform border border-[#e4e1e1] flex flex-col items-center justify-center text-white text-xl font-bold shadow-lg rounded-md p-6 hover:scale-105 hover:cursor-pointer hover:translate-y-3 hover:z-10">
+            <div className="relative duration-300 transition-all hover:-translate-y-1 border border-[#e4e1e1] flex flex-col items-center justify-center text-white text-xl font-bold shadow-lg rounded-md p-6  hover:cursor-pointer ">
               <div className="lg:w-[250px] w-[250px] md:w-[150px] md:h-[200px] lg:h-[250px] h-[250px] overflow-hidden flex items-center justify-center">
                 <img
                   className="w-full h-full object-cover"

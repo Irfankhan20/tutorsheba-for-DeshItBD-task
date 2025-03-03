@@ -10,6 +10,7 @@ import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
 import ForgotPassword from "../pages/login/ForgotPassword";
 import Profile from "../pages/profile/Profile";
+import AllServices from "../pages/home/services/AllServices";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <Profile></Profile>,
+      },
+      {
+        path: "/allServices",
+        element: <AllServices></AllServices>,
       },
     ],
   },
