@@ -168,9 +168,9 @@ const Navbar = () => {
   return (
     <div className=" fixed z-50 w-full  bg-gradient-to-r from-[#600759] via-[#CB0D84] to-[#600759] shadow-sm">
       <div className="flex  justify-between items-center lg:w-10/12 w-11/12 mx-auto">
-        <div className="">
+        <Link to="/" className="">
           <img className="w-[180px] h-[58px]" src={navLogo} alt="" />
-        </div>
+        </Link>
         <div className="hidden lg:flex gap-5">
           <ul className="menu menu-horizontal px-1">{navlinks}</ul>
         </div>
