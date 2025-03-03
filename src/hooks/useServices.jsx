@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "./useAxiosPublic";
 
-const useGuides = () => {
+const useServices = () => {
   const axiosPublic = useAxiosPublic();
   const {
     data: services = [],
@@ -17,4 +17,4 @@ const useGuides = () => {
   return [services, loading, refetch];
 };
 
-export default useGuides;
+export default useServices;
